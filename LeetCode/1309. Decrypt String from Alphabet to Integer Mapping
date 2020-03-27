@@ -1,0 +1,14 @@
+class Solution {
+public:
+    string freqAlphabets(string s) {
+        string o = "";
+        for(int i = s.length() - 1; i >= 0; --i)
+        {
+            if(s[i] == '#')
+                o = (char)(stoi(s.substr(i -= 2, 2)) + 96) + o;
+            else
+                o = (char)(stoi(s.substr(i, 1)) + 96) + o;
+        }
+        return o;
+    }
+};

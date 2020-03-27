@@ -1,0 +1,62 @@
+class Solution {
+public:
+    bool isVowel(char c)
+    {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+    }
+    int findTheLongestSubstring(string s) {
+        std::unordered_map<char, int> vowels;
+        vowels.reserve(5);
+        vowels.insert(std::pair<char, int>('a', 0));
+        vowels.insert(std::pair<char, int>('e', 0));
+        vowels.insert(std::pair<char, int>('i', 0));
+        vowels.insert(std::pair<char, int>('o', 0));
+        vowels.insert(std::pair<char, int>('u', 0));
+        int max = 0;
+        int currVowel = -1;
+        int startPos = 0;
+        int count = 0;
+        bool submitData = true;
+
+        for(int i = 0; i < s.length(); ++i)
+        {
+            ++count;
+            if(isVowel(s[i]))
+            {
+                ++vowels[s[i]];
+                if(currVowel == -1)
+                    currVowel = i;
+            }
+            if(isVowel(s[i + 1]) && i < s.length() - 1 || i == s.length() - 1)
+            {
+                for(auto j : vowels)
+                    if(j.second % 2 != 0)
+                        submitData = false;
+                if(!submitData)
+                    submitData = true;
+                else
+                    if(count > max)
+                        max = count;
+            }
+            if(i == s.length() - 1 && currVowel != -1)
+            {
+                i = currVowel;
+                startPos = i + 1;
+                currVowel = -1;
+                count = 0;
+
+                if(startPos >= s.length() - max)
+                    break;
+
+                // Reset Table
+                vowels['a'] = 0;
+                vowels['e'] = 0;
+                vowels['i'] = 0;
+                vowels['o'] = 0;
+                vowels['u'] = 0;
+            }
+        }
+
+        return max;
+    }
+};

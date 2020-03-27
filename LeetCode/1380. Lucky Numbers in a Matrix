@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> luckyNumbers (vector<vector<int>>& matrix) {
+        vector<int> lucky;
+        for(int i = 0; i < matrix.size(); ++i)
+        {
+            int min = matrix[i][0];
+            int col = 0;
+            for(int j = 1; j < matrix[i].size(); ++j)
+            {
+                if(matrix[i][j] < min)
+                {
+                    min = matrix[i][j];
+                    col = j;
+                }
+            }
+            lucky.push_back(min);
+            for(int j = 0; j < matrix.size(); ++j)
+            {
+                if(matrix[j][col] > min)
+                {
+                    lucky.pop_back();
+                    break;
+                }
+            }
+        }
+        return lucky;
+    }
+};

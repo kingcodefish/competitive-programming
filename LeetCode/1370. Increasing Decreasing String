@@ -1,0 +1,39 @@
+class Solution {
+public:
+    string sortString(string s) {
+        string d = "";
+
+        std::sort(s.begin(), s.end());
+
+        while(s.size() != 0)
+        {
+            d += s[0];
+            char lastPicked = s[0];
+            s.erase(0, 1);
+            for(int i = 0; i < s.size(); ++i)
+                if(s[i] != lastPicked)
+                {
+                    d += s[i];
+                    lastPicked = s[i];
+                    s.erase(i, 1);
+                    --i;
+                }
+
+            if(s.size() == 0)
+                return d;
+
+            d += s[s.size() - 1];
+            lastPicked = s[s.size() - 1];
+            s.erase(s.size() - 1, 1);
+            for(int i = s.size() - 1; i >= 0; --i)
+                if(s[i] != lastPicked)
+                {
+                    d += s[i];
+                    lastPicked = s[i];
+                    s.erase(i, 1);
+                }
+        }
+
+        return d;
+    }
+};

@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int numTimesAllBlue(vector<int>& light) {
+        int count = 0;
+        int &max = light[0];
+
+        for(int i = 0; i < light.size(); ++i)
+        {
+            if(light[i] > max)
+                max = light[i];
+            if(i == max - 1)
+                ++count;
+        }
+
+        return count;
+    }
+};

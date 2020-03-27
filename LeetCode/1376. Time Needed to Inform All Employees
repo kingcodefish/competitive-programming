@@ -1,0 +1,24 @@
+class Solution {
+public:
+
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        vector<int> leafNodes;
+        for(int i = 0; i < informTime.size(); ++i)
+            if(informTime[i] == 0)
+                leafNodes.push_back(i);
+        int max = 0;
+        for(auto &i : leafNodes)
+        {
+            int sum = 0;
+            int curr = manager[i];
+            while(curr != -1)
+            {
+                sum += informTime[curr];
+                curr = manager[curr];
+            }
+            if(sum > max)
+                max = sum;
+        }
+        return max;
+    }
+};

@@ -1,0 +1,28 @@
+class Solution {
+public:
+    // Linearithmic Solution - O(nlogn)
+    int longestConsecutive(vector<int>& nums) {
+        std::sort(begin(nums), end(nums));
+
+        int longest = 0;
+        int curr = 1;
+        for(int i = 1; i < nums.size(); ++i)
+        {
+            if(nums[i] == nums[i - 1] + 1)
+                ++curr;
+            else if(nums[i] == nums[i - 1])
+                continue;
+            else
+            {
+                if(curr > longest)
+                    longest = curr;
+                curr = 1;
+            }
+        }
+
+        if(curr > longest && nums.size() != 0)
+            longest = curr;
+
+        return longest;
+    }
+};

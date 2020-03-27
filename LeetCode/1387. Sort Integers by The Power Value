@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int getKth(int lo, int hi, int k) {
+        std::vector<std::pair<int, int>> sorted;
+        for(int i = lo; i <= hi; ++i)
+        {
+            int j = i;
+            int steps = 0;
+            while(j > 1)
+            {
+                if(j % 2 != 0)
+                    j = 3 * j + 1;
+                else
+                    j /= 2;
+                ++steps;
+            }
+            sorted.push_back(std::make_pair(i, steps));
+        }
+        std::sort(sorted.begin(), sorted.end(), [](auto a, auto b) {
+            if(a.second != b.second)
+                return a.second < b.second;
+            else
+                return a.first < b.first;
+        });
+
+        return sorted[k - 1].first;
+    }
+};

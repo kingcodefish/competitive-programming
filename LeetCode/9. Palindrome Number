@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x < 0)
+            return false;
+        std::vector<int> reverse;
+        reverse.reserve(10);
+        int x2 = x;
+        long long int y = 0;
+        while(x != 0)
+        {
+            reverse.push_back(x % 10);
+            x /= 10;
+        }
+        for(long long int i = 1; !reverse.empty(); i *= 10)
+        {
+            y += reverse.back() * i;
+            reverse.pop_back();
+        }
+
+        if(abs(y) > INT_MAX)
+            return 0;
+
+        return y == x2;
+    }
+};

@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Loop through string, counting iterations as length of substring.
+        // Insert each character into symbol table with index of characters
+        // Upon collision, set new starting position to one after index of colliding character.
+        // Set max if count is greater than current.
+        // Reset symbol table.
+        // Loop again.
+        // Set max to count if count is greater than max, meaning the end of the loop was reached before
+        //    max could be updated.
+        // Return max.
+        //std::unordered_map<char, int> indexes;
+        int indexes[256]{0};
+        memset(indexes, -1, sizeof(indexes));
+        int max = 0;
+        int count = 0;
+
+        for(int i = 0; i < s.length(); ++i, ++count)
+        {
+            // If entry doesn't exist already, insert it along with index of where found
+            if(indexes[s[i]] == -1)
+            {
+                //indexes.insert(std::pair<char, int>(s[i], i));
+                indexes[s[i]] = i;
+            }
+            // Else, if it does exist, continue searching one after that entry (otherwise we'll collide again)
+            // Also, set maximum if biggest so far and reset count.
+            else
+            {
+                i = indexes[s[i]]; // Running continue will increment this to one past last entry.
+                //indexes.clear(); // Reset symbol table
+                memset(indexes, -1, sizeof(indexes));
+                // If so far, largest entry, set as largest.
+                if(count > max)
+                    max = count;
+                count = -1; // Running continue will increment this to 0
+                continue;
+            }
+        }
+        // If we reached the end without any duplicates and it's the max substring, update.
+        if(count > max)
+        {
+            max = count;
+        }
+
+        return max;
+    }
+};

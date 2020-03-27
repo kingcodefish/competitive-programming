@@ -1,0 +1,41 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        std::unordered_map<char, int> table;
+
+        for(char c : t)
+        {
+            table[c]++;
+        }
+
+        int begin = 0;
+        int end = 0;
+        int count = table.size();
+        string finalString = "";
+        while(end < s.length())
+        {
+            if(table.find(s[end]) != table.end())
+            {
+                table[s[end]]--;
+                if(table[s[end]] == 0) --count;
+            }
+
+            end++;
+
+            while(count == 0)
+            {
+                if(end - begin < finalString.length() || finalString == "")
+                    finalString = s.substr(begin, end - begin);
+
+                if(table.count(s[begin]) == 1)
+                {
+                    table[s[begin]]++;
+                    if(table[s[begin]] > 0) count++;
+                }
+                ++begin;
+            }
+        }
+
+        return finalString;
+    }
+};

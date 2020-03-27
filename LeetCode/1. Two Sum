@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        std::pair<int, int> *indexes = new std::pair<int, int>[nums.size()];
+        for(int i = 0; i < nums.size(); ++i)
+        {
+            indexes[i] = std::pair<int, int>(nums[i], i);
+        }
+        std::sort(indexes, indexes + nums.size());
+        for(int i = 0; i < nums.size(); ++i)
+        {
+            if(indexes[i].first > abs(target))
+                break;
+            for(int j = 0; j < nums.size(); ++j)
+            {
+                if(indexes[i].first + indexes[j].first > target)
+                    break;
+                if(indexes[i].first + indexes[j].first == target && indexes[j].second != indexes[i].second)
+                {
+                    return {indexes[i].second, indexes[j].second};
+                }
+            }
+        }
+
+        return {-1, -1};
+    }
+};

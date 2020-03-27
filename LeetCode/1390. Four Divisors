@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int sumFourDivisors(vector<int>& nums) {
+        int sum = 0;
+        double squaroot = 0;
+        vector<int> divisors;
+
+        for(int i = 0; i < nums.size(); ++i)
+        {
+            squaroot = sqrt(nums[i]);
+            for(int j = 1; j <= squaroot; ++j)
+            {
+                if(nums[i] % j == 0)
+                {
+                    divisors.push_back(j);
+                    if(j != squaroot)
+                        divisors.push_back(nums[i] / j);
+                }
+                if(divisors.size() > 4)
+                    break;
+            }
+            if(divisors.size() == 4)
+                for(int j : divisors)
+                    sum += j;
+            divisors = {};
+        }
+
+        return sum;
+    }
+};

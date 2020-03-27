@@ -1,0 +1,58 @@
+class Solution {
+public:
+    std::vector<std::vector<int>> findConnectedParent(vector<vector<int>>& edges, int target, bool first)
+    {
+        bool hasChildren = false;
+        std::vector<std::vector<int>> connections;
+        for(int i = 0; i < edges.size(); ++i)
+        {
+            if(edges[i][0] > edges[i][1])
+                std::swap(edges[i][0], edges[i][1]);
+            if(first && edges[i][0] == target)
+                hasChildren = true;
+            if(edges[i][1] == target)
+            {
+                connections.push_back(edges[i]);
+                std::vector<std::vector<int>> connected = findConnectedParent(edges, edges[i][0], false);
+                for(auto &i : connected)
+                {
+                    connections.push_back(i);
+                }
+            }
+        }
+
+        if(hasChildren)
+            connections.push_back({-1, -1});
+
+        return connections;
+    }
+    int noOfConnections(vector<vector<int>>& edges, int start)
+    {
+        int no = 0;
+
+        for(auto &i : edges)
+        {
+            if(i[0] == start)
+                ++no;
+        }
+
+        return no;
+    }
+    double frogPosition(int n, vector<vector<int>>& edges, int t, int target) {
+        if(n == 1)
+            return 1.0;
+        std::vector<std::vector<int>> connections = findConnectedParent(edges, target, true);
+        double probability = 1.0;
+        if(connections[connections.size() - 1][0] == -1 && (int)connections.size() - t < 1)
+            return 0.0;
+        if(connections[connections.size() - 1][0] == -1)
+            connections.pop_back();
+        if((int)connections.size() - t > 0)
+            return 0.0;
+        for(int i = connections.size() - 1; i >= 0; --i)
+        {
+            probability *= 1.0 / noOfConnections(edges, connections[i][0]);
+        }
+        return probability;
+    }
+};

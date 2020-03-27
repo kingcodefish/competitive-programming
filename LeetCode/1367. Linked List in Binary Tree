@@ -1,0 +1,84 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    std::vector<TreeNode*> dfs(TreeNode* root, int val)
+    {
+        std::vector<TreeNode*> roots;
+
+        // DFS:
+        // Base Case: Test value at current node, do not append if value does not match,
+        //            append current TreeNode* if it does. Return array.
+        // Recursive Case: Recursively test each children and append their TreeNode*
+        //                 to the array if not null.
+        if(root->val == val)
+            roots.push_back(root);
+
+        if(root->left != nullptr)
+        {
+            std::vector<TreeNode*> left = std::move(dfs(root->left, val));
+            for(auto &i : left)
+            {
+                roots.push_back(i);
+            }
+        }
+        if(root->right != nullptr)
+        {
+            std::vector<TreeNode*> right = std::move(dfs(root->right, val));
+            for(auto &i : right)
+            {
+                roots.push_back(i);
+            }
+        }
+
+        return roots;
+    }
+    bool traverseWithLinkedList(ListNode *head, TreeNode* root)
+    {
+        std::vector<TreeNode*> candidates;
+
+        if(head->next == nullptr)
+            return true;
+        else if(root->left == nullptr && root->right == nullptr)
+            return false;
+
+        if(root->left != nullptr && head->next->val == root->left->val)
+            candidates.push_back(root->left);
+        if(root->right != nullptr && head->next->val == root->right->val)
+            candidates.push_back(root->right);
+
+        for(auto i : candidates)
+        {
+            if(traverseWithLinkedList(head->next, i))
+                return true;
+        }
+
+        return false;
+    }
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        std::vector<TreeNode*> candidates = std::move(dfs(root, head->val));
+
+        for(auto i : candidates)
+        {
+            if(traverseWithLinkedList(head, i))
+                return true;
+        }
+
+        return false;
+    }
+};

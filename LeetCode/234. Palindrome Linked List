@@ -1,0 +1,31 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        std::stack<int> reverse;
+        ListNode *curr = head;
+        while(curr != nullptr)
+        {
+            reverse.push(curr->val);
+            curr = curr->next;
+        }
+
+        curr = head;
+        while(!reverse.empty())
+        {
+            if(reverse.top() != curr->val)
+                return false;
+            reverse.pop();
+            curr = curr->next;
+        }
+
+        return true;
+    }
+};
