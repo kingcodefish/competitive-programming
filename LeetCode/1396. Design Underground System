@@ -1,0 +1,39 @@
+class UndergroundSystem {
+private:
+    std::unordered_map<int, pair<string, int>> checkedIn;
+    std::unordered_map<string, pair<int, double>> averageTimes; // number, average
+public:
+    UndergroundSystem() {
+
+    }
+
+    void checkIn(int id, string stationName, int t) {
+        if(checkedIn.find(id) != checkedIn.end())
+            checkedIn[id] = make_pair(stationName, t);
+        else
+            checkedIn.insert(make_pair(id, make_pair(stationName, t)));
+    }
+
+    void checkOut(int id, string stationName, int t) {
+        string c = checkedIn[id].first + '-' + stationName;
+        if(averageTimes.find(c) != averageTimes.end())
+        {
+            averageTimes[c] = make_pair(averageTimes[c].first + 1,
+                                      (averageTimes[c].second * averageTimes[c].first + (t - checkedIn[id].second)) / (averageTimes[c].first + 1));
+        }
+        else
+            averageTimes.insert(make_pair(c, make_pair(1, t - checkedIn[id].second)));
+    }
+
+    double getAverageTime(string startStation, string endStation) {
+        return averageTimes[startStation + '-' + endStation].second;
+    }
+};
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem* obj = new UndergroundSystem();
+ * obj->checkIn(id,stationName,t);
+ * obj->checkOut(id,stationName,t);
+ * double param_3 = obj->getAverageTime(startStation,endStation);
+ */
